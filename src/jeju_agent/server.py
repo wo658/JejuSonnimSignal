@@ -13,7 +13,7 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
-from . import agent, centercsv, config, data, llm, report
+from . import cards, agent, centercsv, config, data, llm, report
 
 PORT = 8765  # .env 의 PORT 로 바꿀 수 있음
 STATE: dict = {}
@@ -63,7 +63,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"error": "아직 볼 수 없는 동네예요."}, 400)
             s.report = report.build(s.snap, emd, month, s.uploads)
             sentences = report.template_sentences(s.report)
-            return self._json({"report": s.report, "sentences": sentences})
+            card = cards.build(s.snap, cards.month_spec(s.report))
+            return self._json({"report": s.report, "sentences": sentences, "card": card})
         if u.path == "/api/order":
             q = parse_qs(u.query)
             return self._json(agent.order(session().snap, q.get("emd", [""])[0], int(q.get("month", ["1"])[0])))
@@ -88,6 +89,11 @@ class Handler(BaseHTTPRequestHandler):
             session().uploads.append(ins)
             return self._json({"title": ins.title, "table": ins.table, "months": ins.months, "problems": ins.problems,
                                "rows": len(ins.rows)})
+        if u.path == "/api/newchat":
+            # 새 화면 = 새 대화. 넣은 센터 파일은 그대로 둔다
+            s = session()
+            s.messages, s.report, s.card = [], None, None
+            return self._json({"ok": True})
         if u.path == "/api/clear":
             clear_work()
             return self._json({"ok": True})

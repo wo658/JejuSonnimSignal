@@ -38,7 +38,8 @@ python -I scripts\collect_hub.py 202201 202608
 
 ```
 src/jeju_agent/     에이전트 코드
-  agent.py          AI 에이전트 (도구 고르기·되묻기·범위 밖 질문 돌리기), LLM 없을 때 규칙 모드
+  agent.py          AI 에이전트 (의도 파악·도구 고르기·되묻기·카드 설계·범위 밖 질문 돌리기), LLM 없을 때 규칙 모드
+  cards.py          대화 속 카드 (신호·막대·선 차트·국적·할 일·달 칩), 1년 흐름 계산
   signals.py        신호 계산 (예년 같은 달 ÷ 1년 평균, 두 방법 재확인, 3년 미만 보류)
   rules.py          손님 3종 × 신호 3단계 할 일 규칙표
   centercsv.py      센터 CSV 헤더로 표 알아보기, 빠진 달 찾기
@@ -57,7 +58,8 @@ setup.bat start.bat
 ## 프롬프트·도구 위치
 
 - 시스템 프롬프트: `src/jeju_agent/agent.py` 의 `SYSTEM`
-- 도구 정의(Tool): 같은 파일의 `TOOLS` (list_neighborhoods, make_report, check_center_files, order_center_data)
+- 도구 정의(Tool): 같은 파일의 `TOOLS` (list_neighborhoods, year_overview, make_report, check_center_files, order_center_data, show_card)
+- 카드 조립: `src/jeju_agent/cards.py` (Claude가 고른 블록에 계산값을 채우고, 계산에 없는 배율이 든 글은 뺌)
 - Claude API 호출: `src/jeju_agent/llm.py` (모델·effort는 `.env` 의 `LLM_MODEL`, `LLM_EFFORT` 로 바꿀 수 있음)
 - AI에 보내는 내용 기록: 실행 중 `work/llm_log.jsonl`
 

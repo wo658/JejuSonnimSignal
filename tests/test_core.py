@@ -92,6 +92,19 @@ class AgentRulesTest(unittest.TestCase):
         self.assertEqual(levels["mainland"], "calm")
         self.assertTrue(any(a["title"].startswith("쉬거나") for a in r["report"]["actions"]))
 
+    def test_rules_year_intent(self):
+        r = self.s._ask_rules("애월읍은 언제 쉬기 좋아요?")
+        self.assertEqual([t["tool"] for t in r["trace"]], ["year_overview"])
+        self.assertIn("line", [b["type"] for b in r["card"]["blocks"]])
+
+    def test_card_fills_numbers_and_drops_made_up_ones(self):
+        from jeju_agent import cards
+        c = cards.build(self.s.snap, {"emd": "애월읍", "title": "t", "blocks": [
+            {"type": "signals", "items": [{"guest": "mainland", "month": 1}]},
+            {"type": "text", "text": "1월은 9.9배였어요"}]})
+        self.assertEqual([b["type"] for b in c["blocks"]], ["signals"])      # 지어낸 배율 문장은 빠짐
+        self.assertEqual(c["blocks"][0]["items"][0]["level"], "calm")        # 신호는 계산값으로 채움
+
     def test_llm_summary_has_no_center_rows(self):
         rep = report.build(self.s.snap, "애월읍", 8)
         summ = report.summary_for_llm(rep)
