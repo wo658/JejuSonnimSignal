@@ -36,7 +36,7 @@ main { flex:1; overflow:auto }
 .hello p { margin:0; color:var(--muted-fg); font-size:16px }
 .starters { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:24px; width:100% }
 .starter { all:unset; box-sizing:border-box; cursor:pointer; text-align:left; background:var(--background); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--shadow-sm); transition:border-color .15s, transform .15s }
-.starter:hover { border-color:#a1a1aa; transform:translateY(-1px) }
+.starter:hover { border-color:#a1a1aa; background:var(--background); color:var(--foreground); transform:translateY(-1px) }
 .starter:focus-visible { outline:2px solid var(--ring); outline-offset:2px }
 .starter .k { font-size:13px; color:var(--muted-fg) }
 .starter .q { font-size:15.5px; font-weight:600; line-height:1.45 }
