@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import re
 
-from . import centercsv, data, llm, report
+from . import centercsv, config, data, llm, report
 
 SYSTEM = """너는 '손님 신호등'이다. 제주빅데이터센터 PC에서 제주 가게 사장님(데이터·컴퓨터가 익숙하지 않은 도민)을 돕는다.
 할 일: 사장님이 고른 동네(읍면동)와 달에, 외국인·육지·동네 손님이 예년에 1년 평균보다 많았는지(북적·보통·한산) 보여 주고 무엇을 준비할지 알려 준다.
@@ -125,7 +125,7 @@ class Session:
 
 def order(snap: data.Snapshot, emd: str, month: int) -> dict:
     """데이터 주문서: 공개 데이터는 이미 있음, 센터 표는 무엇을 받을지 안내."""
-    years = sorted({int(ym[:4]) for ym in snap.pop.get(emd, {})})
+    years = sorted({int(ym[:4]) for ym in snap.pop.get(emd, {})} - set(range(config.FROM_YEAR)))
     yms = [f"{y}년 {month}월" for y in years if f"{y}{month:02d}" <= snap.last_ym()]
     return {
         "이미있음": ["허브 583 읍면동 내국인 유동인구", "허브 589 읍면동 외국인 단기체류 유동인구"],

@@ -13,7 +13,7 @@ if errorlevel 1 (
 python --version
 if not exist ".env" (
   copy ".env.example" ".env" > nul
-  echo .env 파일을 만들었습니다. 메모장으로 열어 키를 넣으세요. (매뉴얼 3단계)
+  echo .env 파일을 만들었습니다. 메모장으로 열어 키를 넣으세요. ^(매뉴얼 3단계^)
 )
 echo 추가로 설치할 패키지는 없습니다. (Python 표준 라이브러리만 사용)
 set PYTHONPATH=%~dp0src
