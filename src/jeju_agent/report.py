@@ -23,13 +23,16 @@ def build(snap: data.Snapshot, emd: str, month: int, uploads: list[centercsv.Ins
         actions.append({"guest": s.guest, "title": a[0], "detail": a[1], "why": why})
         evidence.append(why)
 
+    order = {"busy": 0, "calm": 1, "mid": 2}
+    actions.sort(key=lambda x: order[next(g.level for g in sigs if g.guest == x["guest"])])
     nations = data.top_nationalities(snap, emd, month)
     foreign_sig = sigs[0]
     if foreign_sig.level == "busy" and nations:
         top = nations[0][0]
         pay = rules.PAY_BY_NATION.get(top)
-        if pay and actions:
-            actions[0]["detail"] = f"{top} 손님이 가장 많아요({nations[0][1]:.0%}). {pay}를 챙겨 두면 좋아요."
+        fa = next((a for a in actions if a["guest"] == "foreign"), None)
+        if pay and fa:
+            fa["detail"] = f"{top} 손님이 가장 많아요({nations[0][1]:.0%}). {pay}를 챙겨 두면 좋아요."
 
     # 센터 CSV (반출 불가 원본): PC 안에서만 계산, 결과는 범주만
     center_lines, used_center, asks = [], [], []

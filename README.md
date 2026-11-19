@@ -39,7 +39,7 @@ python -I scripts\collect_hub.py 202201 202608
 ```
 src/jeju_agent/     에이전트 코드
   agent.py          AI 에이전트 (도구 고르기·되묻기·범위 밖 질문 돌리기), LLM 없을 때 규칙 모드
-  signals.py        신호 계산 (예년 같은 달 ÷ 1년 평균, 두 방법 재확인, 3년 미만 판단 보류)
+  signals.py        신호 계산 (예년 같은 달 ÷ 1년 평균, 두 방법 재확인, 3년 미만 보류)
   rules.py          손님 3종 × 신호 3단계 할 일 규칙표
   centercsv.py      센터 CSV 헤더로 표 알아보기, 빠진 달 찾기
   export_check.py   반출 점검 (10 미만 가림, 역산 방지, 반출 신청 설명 초안)
@@ -53,6 +53,13 @@ docs/기획서.pdf      대회 제출 기획서
 tests/              자체 시험
 setup.bat start.bat
 ```
+
+## 프롬프트·도구 위치
+
+- 시스템 프롬프트: `src/jeju_agent/agent.py` 의 `SYSTEM`
+- 도구 정의(Tool): 같은 파일의 `TOOLS` (list_neighborhoods, make_report, check_center_files, order_center_data)
+- Claude API 호출: `src/jeju_agent/llm.py` (모델·effort는 `.env` 의 `LLM_MODEL`, `LLM_EFFORT` 로 바꿀 수 있음)
+- AI에 보내는 내용 기록: 실행 중 `work/llm_log.jsonl`
 
 ## 왜 외부 패키지를 안 쓰나
 
