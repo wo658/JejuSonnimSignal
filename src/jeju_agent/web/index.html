@@ -11,172 +11,216 @@
   --muted:#f4f4f5; --muted-fg:#71717a; --accent:#f4f4f5;
   --border:#e4e4e7; --input:#e4e4e7; --ring:#18181b;
   --primary:#18181b; --primary-fg:#fafafa; --radius:10px;
-  --shadow-sm:0 1px 2px 0 rgb(0 0 0 / .05); --shadow:0 1px 3px 0 rgb(0 0 0 / .08), 0 1px 2px -1px rgb(0 0 0 / .08);
+  --shadow-sm:0 1px 2px 0 rgb(0 0 0 / .05);
+  --shadow-lg:0 10px 30px -10px rgb(0 0 0 / .18), 0 4px 10px -6px rgb(0 0 0 / .1);
   --busy:#e0562a; --busySoft:#fbe3d9; --mid:#9a6a00; --midSoft:#fbefd3; --calm:#2f86a0; --calmSoft:#d9ecf1; --hold:#8b95a1; --holdSoft:#f4f4f5
 }
 * { box-sizing:border-box }
-body { margin:0; background:var(--page); color:var(--foreground); font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif; font-size:15px; line-height:1.6; word-break:keep-all; -webkit-font-smoothing:antialiased }
+html, body { height:100% }
+body { margin:0; background:var(--page); color:var(--foreground); font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif; font-size:15.5px; line-height:1.6; word-break:keep-all; -webkit-font-smoothing:antialiased; display:flex; flex-direction:column }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
-.wrap { max-width:1160px; margin:0 auto; padding:28px 24px 60px; display:grid; grid-template-columns:420px 1fr; gap:20px; align-items:start }
-.brand { grid-column:1/-1; display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding-bottom:4px }
-.brand h1 { margin:0; font-size:24px; font-weight:700; letter-spacing:-.02em }
-.brand span { color:var(--muted-fg); font-size:14px }
-.banner { grid-column:1/-1; border:1px solid #f5d98a; background:var(--midSoft); color:var(--mid); border-radius:var(--radius); padding:10px 14px; font-size:14px }
-.side { display:flex; flex-direction:column; gap:14px }
-.side .bottom { display:flex; flex-direction:column; gap:6px }
+svg.i { width:18px; height:18px; flex:none }
 
-/* Card */
-.card { background:var(--background); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow-sm); padding:20px; display:flex; flex-direction:column; gap:14px }
-.card-h { display:flex; flex-direction:column; gap:2px }
-.card h2 { margin:0; font-size:16px; font-weight:600; letter-spacing:-.01em; display:flex; align-items:center; gap:8px }
-.card-d { margin:0; color:var(--muted-fg); font-size:13.5px }
+/* 안내 띠 */
+.logo { width:30px; height:30px; flex:none }
+.banner { background:var(--midSoft); color:var(--mid); text-align:center; font-size:14px; padding:8px 16px }
 
-/* Label · Field */
-.field { display:flex; flex-direction:column; gap:6px }
-label.lb { font-size:13.5px; font-weight:500; color:var(--foreground) }
-.two { display:grid; grid-template-columns:1fr 112px; gap:10px }
-.row { display:flex; gap:8px }
-.row input { flex:1 }
+/* 대화 영역 */
+main { flex:1; overflow:auto }
+.thread { max-width:780px; margin:0 auto; padding:28px 20px 24px; display:flex; flex-direction:column; gap:18px }
 
-/* Select · Input (SelectTrigger / Input) */
-select, input[type=text] { width:100%; height:42px; font:inherit; font-size:15px; color:var(--foreground); padding:0 12px; border:1px solid var(--input); border-radius:var(--radius); background-color:var(--background); box-shadow:var(--shadow-sm); transition:border-color .15s, box-shadow .15s }
-select { appearance:none; -webkit-appearance:none; padding-right:36px; cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E");
-  background-repeat:no-repeat; background-position:right 10px center }
-select:hover, input[type=text]:hover { border-color:#d4d4d8 }
-input::placeholder { color:var(--muted-fg) }
-select:focus-visible, input:focus-visible, button:focus-visible, .drop:focus-within { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px rgb(24 24 27 / .12) }
+/* 첫 화면 */
+.hello { display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:40px 0 8px }
+.hello .logo { width:60px; height:60px; margin-bottom:8px }
+.hello h2 { margin:0; font-size:28px; line-height:1.35; letter-spacing:-.02em }
+.hello p { margin:0; color:var(--muted-fg); font-size:16px }
+.starters { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:24px; width:100% }
+.starter { all:unset; box-sizing:border-box; cursor:pointer; text-align:left; background:var(--background); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--shadow-sm); transition:border-color .15s, transform .15s }
+.starter:hover { border-color:#a1a1aa; transform:translateY(-1px) }
+.starter:focus-visible { outline:2px solid var(--ring); outline-offset:2px }
+.starter .k { font-size:13px; color:var(--muted-fg) }
+.starter .q { font-size:15.5px; font-weight:600; line-height:1.45 }
 
-/* Button */
-button { font:inherit; font-size:14.5px; font-weight:500; height:42px; padding:0 16px; border:1px solid transparent; border-radius:var(--radius); background:var(--primary); color:var(--primary-fg); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; white-space:nowrap; box-shadow:var(--shadow-sm); transition:background .15s, border-color .15s }
-button:hover { background:#27272a }
-button.outline { background:var(--background); color:var(--foreground); border-color:var(--input) }
-button.outline:hover { background:var(--accent) }
-button.secondary { background:var(--muted); color:var(--foreground); box-shadow:none }
-button.secondary:hover { background:#e4e4e7 }
-button.ghost { background:none; color:var(--muted-fg); box-shadow:none; height:36px; font-size:13.5px }
-button.ghost:hover { background:var(--accent); color:var(--foreground) }
-button svg { width:16px; height:16px; flex:none }
+/* 말풍선 */
+.row-me { display:flex; justify-content:flex-end }
+.me { background:var(--primary); color:var(--primary-fg); padding:11px 16px; border-radius:18px 18px 4px 18px; max-width:80% }
+.row-ag { display:flex; gap:10px; align-items:flex-start }
+.row-ag > .logo { width:30px; height:30px; margin-top:2px }
+.ag-body { display:flex; flex-direction:column; gap:10px; min-width:0; flex:1 }
+.ag { align-self:flex-start; background:var(--background); border:1px solid var(--border); padding:11px 16px; border-radius:4px 18px 18px 18px; max-width:88%; box-shadow:var(--shadow-sm) }
+.dots span { display:inline-block; width:6px; height:6px; margin:0 2px; border-radius:50%; background:var(--muted-fg); animation:b 1s infinite ease-in-out }
+.dots span:nth-child(2) { animation-delay:.15s } .dots span:nth-child(3) { animation-delay:.3s }
+@keyframes b { 0%,80%,100% { opacity:.25 } 40% { opacity:1 } }
 
-/* Badge */
-.badge { display:inline-flex; align-items:center; border:1px solid var(--border); border-radius:999px; padding:1px 9px; font-size:12px; font-weight:500; color:var(--muted-fg); background:var(--background); line-height:1.6 }
+/* 카드 공통 */
+.card { background:var(--background); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-sm); overflow:hidden; max-width:600px }
+.card-h { padding:16px 18px 0 }
+.card-h .t { font-size:17px; font-weight:700; letter-spacing:-.01em; line-height:1.4 }
+.card-h .s { font-size:13px; color:var(--muted-fg) }
+.card-b { padding:14px 18px 16px; display:flex; flex-direction:column; gap:12px }
+.card-f { display:flex; gap:8px; padding:12px 18px; border-top:1px solid var(--border); background:var(--page) }
 
-/* 대화 */
-.chips { display:flex; flex-wrap:wrap; gap:6px }
-.chips button { height:32px; padding:0 12px; font-size:13.5px; border-radius:999px; background:var(--background); color:var(--foreground); border-color:var(--input) }
-.chips button:hover { background:var(--accent) }
-.chat { display:flex; flex-direction:column; gap:10px; min-height:300px; max-height:460px; overflow:auto; padding:4px 2px }
-.chatcard h2 { font-size:18px }
-.ag-row { display:flex; gap:8px; align-items:flex-start; max-width:92% }
-.ag-row .msg { max-width:100% }
-.av { width:28px; height:28px; flex:none; margin-top:2px }
-.pick { display:grid; grid-template-columns:1fr 100px auto; gap:8px; align-items:end }
-.chatcard .row input, .chatcard .row button { height:48px }
-.chatcard .row input { font-size:15.5px }
-.msg { padding:10px 14px; border-radius:14px; max-width:88%; font-size:15px }
-.me { background:var(--primary); color:var(--primary-fg); align-self:flex-end }
-.ag { background:var(--muted); align-self:flex-start }
-
-/* 파일 놓는 곳 */
-.drop { position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; border:1.5px dashed #d4d4d8; border-radius:12px; padding:22px 16px; text-align:center; cursor:pointer; background:var(--background); transition:border-color .15s, background .15s }
-.drop:hover, .drop.over { border-color:var(--ring); background:var(--page) }
-.drop .ic { width:40px; height:40px; border-radius:999px; background:var(--muted); display:grid; place-items:center }
-.drop .ic svg { width:20px; height:20px; color:var(--muted-fg) }
-.drop .t { font-size:14.5px; font-weight:500 }
-.drop .d { font-size:13px; color:var(--muted-fg) }
-.files { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px }
-.files:empty { display:none }
-.files li { display:flex; align-items:center; gap:10px; border:1px solid var(--border); border-radius:var(--radius); padding:9px 12px; font-size:14px }
-.files li svg { width:16px; height:16px; color:#16a34a; flex:none }
-.files li .nm { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
-
-/* 결과지 */
-.sheet { background:var(--background); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-sm); padding:32px; display:flex; flex-direction:column; gap:24px }
-.sheet .meta { color:var(--muted-fg); font-size:14px }
-.sheet h2 { margin:4px 0 0; font-size:26px; line-height:1.35; letter-spacing:-.02em }
-.sigs { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
-.sig { border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:2px }
-.sig .g { font-size:14px; color:var(--muted-fg) }
-.sig .l { font-size:28px; font-weight:700 }
-.sig .r { font-size:13px; color:var(--muted-fg) }
+/* 결과지 카드 */
+.tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:8px }
+.tile { border-radius:12px; padding:10px 12px; display:flex; flex-direction:column }
+.tile .g { font-size:12.5px; color:var(--muted-fg) }
+.tile .l { font-size:20px; font-weight:800; line-height:1.3 }
+.tile .r { font-size:12px; color:var(--muted-fg) }
+.first { display:flex; gap:10px; align-items:flex-start; background:var(--muted); border-radius:12px; padding:10px 12px; font-size:14.5px }
+.first .lb { font-size:12px; font-weight:600; color:var(--primary-fg); background:var(--primary); border-radius:999px; padding:1px 8px; flex:none; margin-top:2px }
 .busy { background:var(--busySoft) } .busy .l { color:var(--busy) }
 .mid { background:var(--midSoft) } .mid .l { color:var(--mid) }
 .calm { background:var(--calmSoft) } .calm .l { color:var(--calm) }
-.hold { background:var(--holdSoft) } .hold .l { color:var(--hold); font-size:22px }
-.says { font-size:18px; line-height:1.6; margin:0 }
-.asks { background:var(--busySoft); border-radius:var(--radius); padding:12px 16px; font-size:15px }
+.hold { background:var(--holdSoft) } .hold .l { color:var(--hold) }
+.asks { background:var(--busySoft); border-radius:12px; padding:10px 12px; font-size:14px }
+
+/* 받을 자료 카드 */
+.steps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px }
+.step { display:grid; grid-template-columns:40px 1fr; gap:12px; border:1px solid var(--border); border-radius:12px; padding:12px }
+.step .ic { width:40px; height:40px; border-radius:10px; display:grid; place-items:center }
+.step .ic svg { width:20px; height:20px }
+.step .nm { font-weight:700; font-size:15px }
+.step .use { font-size:13.5px; color:var(--muted-fg) }
+.chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px }
+.chip { font-size:12.5px; border:1px solid var(--border); border-radius:999px; padding:1px 9px; background:var(--background) }
+.chip.dark { background:var(--primary); color:var(--primary-fg); border-color:var(--primary) }
+.have { display:flex; gap:8px; align-items:center; font-size:13.5px; color:var(--muted-fg) }
+.have svg { color:#16a34a; width:16px; height:16px }
+.tip { font-size:13.5px; color:var(--muted-fg); display:flex; gap:8px; align-items:flex-start }
+.tip svg { width:16px; height:16px; margin-top:3px }
+
+/* 파일 카드 */
+.file { display:flex; align-items:center; gap:12px; border:1px solid var(--border); border-radius:12px; padding:12px 14px; background:var(--background); max-width:600px }
+.file .ic { width:36px; height:36px; border-radius:10px; background:#dcfce7; color:#16a34a; display:grid; place-items:center; flex:none }
+.file.bad .ic { background:var(--busySoft); color:var(--busy) }
+.file .nm { font-weight:600; font-size:14.5px }
+.file .s { font-size:13px; color:var(--muted-fg) }
+
+/* 버튼 */
+button { font:inherit; font-size:14.5px; font-weight:500; height:40px; padding:0 14px; border:1px solid transparent; border-radius:var(--radius); background:var(--primary); color:var(--primary-fg); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:7px; white-space:nowrap; transition:background .15s, border-color .15s }
+button:hover { background:#27272a }
+button.outline { background:var(--background); color:var(--foreground); border-color:var(--input) }
+button.outline:hover { background:var(--accent) }
+button.ghost { background:none; color:var(--muted-fg); height:34px; font-size:13.5px; padding:0 10px }
+button.ghost:hover { background:var(--accent); color:var(--foreground) }
+button.icon { width:44px; padding:0 }
+button:focus-visible, select:focus-visible, input:focus-visible { outline:none; box-shadow:0 0 0 3px rgb(24 24 27 / .15); border-color:var(--ring) }
+
+/* 입력 */
+footer { flex:none; padding:10px 20px 18px; background:var(--page) }
+.composer { max-width:780px; margin:0 auto; display:flex; flex-direction:column; gap:8px }
+.quick { display:flex; gap:6px; align-items:center; flex-wrap:wrap; font-size:13.5px; color:var(--muted-fg) }
+.quick select { height:34px; font:inherit; font-size:13.5px; padding:0 30px 0 12px; border:1px solid var(--input); border-radius:999px; background-color:var(--background); color:var(--foreground); appearance:none; -webkit-appearance:none; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center }
+.quick button { height:34px; border-radius:999px; font-size:13.5px }
+.quick .sp { flex:1 }
+.box { display:flex; align-items:center; gap:6px; background:var(--background); border:1px solid var(--input); border-radius:16px; padding:6px; box-shadow:var(--shadow-lg) }
+.box:focus-within { border-color:#a1a1aa }
+.box input[type=text] { flex:1; border:0; outline:0; font:inherit; font-size:16px; padding:10px 6px; background:none; min-width:0; box-shadow:none }
+.box input::placeholder { color:var(--muted-fg) }
+.box button { height:44px; border-radius:12px }
+.box .attach { background:none; color:var(--muted-fg) }
+.box .attach:hover { background:var(--accent); color:var(--foreground) }
+
+/* 파일 끌어 놓기 */
+#dropzone { position:fixed; inset:0; background:rgb(250 250 250 / .9); display:none; place-items:center; z-index:30; pointer-events:none }
+#dropzone.on { display:grid }
+#dropzone div { border:2px dashed var(--ring); border-radius:20px; padding:48px 64px; text-align:center; font-size:18px; font-weight:600; background:var(--background) }
+
+/* 크게 보기 */
+#modal { position:fixed; inset:0; z-index:40; display:none; background:rgb(9 9 11 / .45); overflow:auto; padding:32px 16px }
+#modal.on { display:block }
+.sheet { max-width:820px; margin:0 auto; background:var(--background); border-radius:20px; padding:36px; display:flex; flex-direction:column; gap:24px; box-shadow:var(--shadow-lg) }
+.sheet .bar { display:flex; gap:8px; justify-content:flex-end; margin:-12px -12px -8px 0 }
+.sheet .meta { color:var(--muted-fg); font-size:14px }
+.sheet h2 { margin:4px 0 0; font-size:28px; line-height:1.35; letter-spacing:-.02em }
+.sigs { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.sig { border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:2px }
+.sig .g { font-size:14px; color:var(--muted-fg) }
+.sig .l { font-size:30px; font-weight:800 }
+.sig .r { font-size:13px; color:var(--muted-fg) }
+.says { font-size:18px; line-height:1.65; margin:0 }
 .todo h3 { margin:0 0 12px; font-size:18px }
-.todo ol { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px }
+.todo ol { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px }
 .todo li { display:grid; grid-template-columns:28px 1fr; gap:12px }
 .todo .n { width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700 }
 .todo b { font-size:17px; display:block }
 .todo .w { color:var(--muted-fg); font-size:13px }
-.foot { color:var(--muted-fg); font-size:13px; display:flex; flex-direction:column; gap:4px; border-top:1px solid var(--border); padding-top:16px }
-details { font-size:13px; color:var(--muted-fg) }
-details summary { cursor:pointer }
-details pre { white-space:pre-wrap; font-family:inherit; background:var(--muted); border-radius:var(--radius); padding:12px; margin:8px 0 0 }
-.mascot.sm { width:34px; height:34px; flex:none }
-.mascot.lg { width:72px; height:72px }
-.empty { color:var(--muted-fg); text-align:center; padding:56px 0; display:flex; flex-direction:column; align-items:center; gap:18px }
-.empty p { margin:0; font-size:17px; color:var(--foreground); font-weight:600; line-height:1.5 }
-@media (max-width:900px) { .wrap { grid-template-columns:1fr; padding:20px 16px 48px } .sigs { grid-template-columns:1fr } .sheet { padding:22px } }
-@media print { .side, .brand, .banner, .noprint { display:none !important } body { background:#fff } .wrap { display:block; padding:0 } .sheet { padding:0; border:0; box-shadow:none }
-  * { -webkit-print-color-adjust:exact; print-color-adjust:exact } }
+
+@media (max-width:700px) {
+  .starters { grid-template-columns:1fr } .tiles, .sigs { grid-template-columns:1fr } .sheet { padding:22px }
+  .thread { padding:20px 16px } footer { padding:8px 16px 14px }
+}
+@media print {
+  body { display:block; height:auto }
+  body > *:not(#modal) { display:none !important }
+  #modal { position:static; display:block !important; background:none; padding:0; overflow:visible }
+  .sheet { box-shadow:none; padding:0; max-width:none } .sheet .bar { display:none }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand"><svg class="mascot sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><h1>손님 신호등</h1><span id="mode">우리 동네 손님, 예년엔 어땠을까요?</span></div>
-  <div class="banner" id="banner" hidden></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 120 120"><rect width="120" height="120" rx="30" fill="#18181b"/><circle cx="60" cy="33" r="13" fill="#f59a72"/><circle cx="60" cy="60" r="13" fill="#f7cd5d"/><circle cx="60" cy="87" r="13" fill="#8fcbe0"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.4 11-8.6 8.6a6 6 0 0 1-8.5-8.5l8.6-8.6a4 4 0 0 1 5.7 5.7l-8.6 8.6a2 2 0 0 1-2.8-2.8l8-8"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+</svg>
 
-  <aside class="side">
-    <section class="card chatcard" aria-label="물어보기">
-      <div class="card-h"><h2>편하게 물어보세요</h2></div>
-      <div class="chat" id="chat" aria-live="polite">
-        <div class="ag-row"><svg class="av" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><div class="msg ag">어느 동네에서 장사하세요? 궁금한 달도 같이 알려 주세요.</div></div>
+<div class="banner" id="banner" hidden></div>
+
+<main id="main">
+  <div class="thread" id="thread">
+    <section class="hello" id="hello">
+      <svg class="logo" aria-hidden="true"><use href="#logo"/></svg>
+      <h2>우리 동네 손님,<br>예년엔 어땠을까요?</h2>
+      <p>동네와 달을 말해 주시면 손님 신호를 알려 드릴게요</p>
+      <div class="starters">
+        <button class="starter" data-q="애월에서 카페 하는데, 1월에 쉬어도 될까요?"><span class="k">쉬는 날 정하기</span><span class="q">애월 카페, 1월에 쉬어도 될까요?</span></button>
+        <button class="starter" data-q="성산에서 식당 해요. 10월에 알바 더 뽑을까요?"><span class="k">사람 뽑기</span><span class="q">성산 10월, 알바 더 뽑을까요?</span></button>
+        <button class="starter" data-q="정방동 분식집인데 8월에 중국어 메뉴판 만들까요?"><span class="k">메뉴판</span><span class="q">정방동 8월, 중국어 메뉴판 만들까요?</span></button>
       </div>
-      <div class="chips">
-        <button data-q="애월에서 카페 하는데, 1월에 쉬어도 될까요?">1월에 쉬어도 될까요?</button>
-        <button data-q="중국어 메뉴판 바꿀까요?">메뉴판 바꿀까요?</button>
-        <button data-q="재료 더 받아야 할까요?">재료 더 받을까요?</button>
-      </div>
-      <div class="row"><input id="q" type="text" placeholder="예: 성산 10월에 알바 더 뽑을까요?" aria-label="질문"><button id="send">보내기</button></div>
     </section>
+  </div>
+</main>
 
-    <section class="card" aria-label="동네와 달">
-      <div class="card-h"><h2>직접 골라도 돼요</h2></div>
-      <div class="pick">
-        <div class="field"><label class="lb" for="emd">동네</label><select id="emd"></select></div>
-        <div class="field"><label class="lb" for="month">달</label><select id="month"></select></div>
-        <button id="go">확인</button>
-      </div>
-    </section>
-
-    <section class="card" aria-label="센터 자료">
-      <div class="card-h"><h2>센터 자료가 있나요? <span class="badge">선택</span></h2>
-        <p class="card-d">없어도 결과지는 나와요.</p></div>
-      <label class="drop" id="drop">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></span>
-        <span class="t">CSV 파일을 끌어 놓거나 눌러서 골라 주세요</span>
-        <span class="d">센터에서 받은 파일 그대로 넣으면 돼요</span>
-        <input type="file" id="file" accept=".csv" multiple class="sr-only" aria-label="CSV 파일 고르기">
-      </label>
-      <ul class="files" id="files"></ul>
-      <button class="outline" id="order">어떤 자료를 받으면 될까요?</button>
-    </section>
-
-    <div class="bottom">
-      <button class="secondary" id="print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>PDF로 저장하기</button>
-      <button class="ghost" id="clear">다 썼어요 · 자료 지우기</button>
+<footer>
+  <div class="composer">
+    <div class="quick" aria-label="직접 고르기">
+      <span>직접 고르기</span>
+      <select id="emd" aria-label="동네"></select>
+      <select id="month" aria-label="달"></select>
+      <button id="go">보기</button>
+      <span class="sp"></span>
+      <button class="outline" id="order">어떤 자료를 받을까요?</button>
+      <button class="outline" id="clear" title="넣은 자료와 대화를 지워요">자료 지우기</button>
     </div>
-  </aside>
+    <div class="box">
+      <button class="attach icon" id="attach" title="센터 CSV 넣기" aria-label="센터 CSV 넣기"><svg class="i"><use href="#i-clip"/></svg></button>
+      <input id="q" type="text" placeholder="궁금한 걸 편하게 물어보세요" aria-label="질문" autocomplete="off">
+      <button class="icon" id="send" aria-label="보내기"><svg class="i"><use href="#i-send"/></svg></button>
+      <input type="file" id="file" accept=".csv" multiple class="sr-only" tabindex="-1">
+    </div>
+  </div>
+</footer>
 
-  <main id="out"><div class="sheet"><div class="empty"><svg class="mascot lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="손님 신호등 아이콘"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><p>물어보거나 동네와 달을 고르면<br>손님 신호를 알려 드릴게요</p></div></div></main>
-</div>
+<div id="dropzone"><div>센터 CSV 파일을 여기에 놓아 주세요</div></div>
+<div id="modal" role="dialog" aria-modal="true" aria-label="결과지 크게 보기"></div>
+
 <script>
 const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let INFO = {};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ic = (id, cls = 'i') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const REPORTS = [];
+let INFO = {}, LAST = null;
 async function api(path, opt) { const r = await fetch(path, opt); return r.json(); }
 
 async function init() {
@@ -184,79 +228,139 @@ async function init() {
   $('#emd').innerHTML = INFO.emds.map(e => `<option>${esc(e)}</option>`).join('');
   $('#month').innerHTML = Array.from({length:12}, (_, i) => `<option value="${i+1}">${i+1}월</option>`).join('');
   $('#month').value = String((new Date().getMonth() + 1) % 12 + 1);   // 다음 달
-  if (!INFO.llm) $('#mode').textContent = '우리 동네 손님, 예년엔 어땠을까요? · AI 없이 보는 중';
-  if (INFO.dummy) { $('#banner').hidden = false; $('#banner').textContent = '지금은 연습용 가상 데이터예요.'; }
-  showFiles(INFO.uploads);
-  const q = new URLSearchParams(location.search);   // 예: /?emd=애월읍&month=8
-  if (q.get('q')) { ask(q.get('q')); return; }   // 예: /?q=애월 1월에 쉬어도 될까요?
-  if (q.get('emd') && INFO.emds.includes(q.get('emd'))) { $('#emd').value = q.get('emd'); $('#month').value = q.get('month') || $('#month').value; $('#go').click(); }
+  const notes = [!INFO.llm && 'AI 연결 없이 정해진 문장으로 답하고 있어요.', INFO.dummy && '지금은 연습용 가상 데이터예요.'].filter(Boolean);
+  if (notes.length) { $('#banner').hidden = false; $('#banner').textContent = notes.join(' '); }
+  const q = new URLSearchParams(location.search);
+  if (q.get('q')) ask(q.get('q'));                                   // 예: /?q=애월 1월에 쉬어도 될까요?
+  else if (INFO.emds.includes(q.get('emd'))) { $('#emd').value = q.get('emd'); $('#month').value = q.get('month') || $('#month').value; show(); }
 }
 
-function sheet(rep, sentences) {
+// ---------- 대화 ----------
+function scrollEnd() { $('#main').scrollTop = $('#main').scrollHeight; }
+function me(text) { $('#hello')?.remove(); const d = document.createElement('div'); d.className = 'row-me'; d.innerHTML = `<div class="me">${esc(text)}</div>`; $('#thread').append(d); scrollEnd(); }
+function agent(html) {
+  $('#hello')?.remove();
+  const row = document.createElement('div'); row.className = 'row-ag';
+  row.innerHTML = `${ic('logo', 'logo')}<div class="ag-body">${html}</div>`;
+  $('#thread').append(row); scrollEnd(); return row.querySelector('.ag-body');
+}
+const bubble = text => `<div class="ag">${esc(text)}</div>`;
+
+async function ask(text) {
+  text = text.trim(); if (!text) return;
+  const named = (INFO.emds || []).some(e => text.includes(e) || text.includes(e.slice(0, -1)));
+  const t = named || !LAST ? text : `${LAST.emd} ${LAST.month}월. ${text}`;
+  me(text);
+  const body = agent('<div class="ag dots" aria-label="보고 있어요"><span></span><span></span><span></span></div>');
+  try {
+    const r = await api('/api/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text: t})});
+    body.innerHTML = bubble(r.answer || '다시 한번 물어봐 주세요.');
+    if (r.report && (r.trace || []).some(x => x.tool === 'make_report')) addReport(body, r.report, [r.answer]);
+  } catch (e) { body.innerHTML = bubble('연결이 끊겼어요. 검은 창이 켜져 있는지 확인해 주세요.'); }
+  scrollEnd();
+}
+
+async function show() {
+  const emd = $('#emd').value, month = $('#month').value;
+  me(`${emd} ${month}월 손님 보여 주세요`);
+  const r = await api(`/api/report?emd=${encodeURIComponent(emd)}&month=${month}`);
+  const body = agent(bubble((r.sentences || []).join(' ')));
+  addReport(body, r.report, r.sentences);
+}
+
+// ---------- 결과지 카드 ----------
+function addReport(body, rep, sentences) {
   if (!rep) return;
-  const ym = rep.data_until ? `${rep.data_until.slice(0,4)}년 ${+rep.data_until.slice(4)}월` : '';
+  LAST = rep; $('#emd').value = rep.emd; $('#month').value = rep.month;
+  const id = REPORTS.push({rep, sentences}) - 1;
+  const tiles = rep.signals.map(s => `<div class="tile ${s.level}"><span class="g">${esc(s.guest_name)}</span><span class="l">${esc(s.label)}</span><span class="r">${s.ratio ? '평소의 ' + s.ratio.toFixed(1) + '배' : '기록 부족'}</span></div>`).join('');
+  const a = rep.actions[0];
+  body.insertAdjacentHTML('beforeend', `<div class="card">
+    <div class="card-h"><div class="t">${rep.month}월 ${esc(rep.emd)} 손님 신호</div><div class="s">예년 같은 달을 1년 평균과 견줬어요</div></div>
+    <div class="card-b"><div class="tiles">${tiles}</div>
+      ${a ? `<div class="first"><span class="lb">먼저</span><span><b>${esc(a.title)}</b> · ${esc(a.detail)}</span></div>` : ''}
+      ${rep.asks.length ? `<div class="asks">${rep.asks.map(esc).join('<br>')}</div>` : ''}</div>
+    <div class="card-f"><button onclick="openSheet(${id})">${ic('i-expand')}크게 보기</button><button class="outline" onclick="openSheet(${id}, true)">${ic('i-print')}PDF로 저장</button></div>
+  </div>`);
+  scrollEnd();
+}
+
+function openSheet(id, print) {
+  const {rep, sentences} = REPORTS[id];
   const sig = rep.signals.map(s => `<div class="sig ${s.level}"><span class="g">${esc(s.guest_name)}</span><span class="l">${esc(s.label)}</span><span class="r">${s.ratio ? '평소의 ' + s.ratio.toFixed(1) + '배' : '기록이 부족해요'}</span></div>`).join('');
-  const todo = rep.actions.map((a, i) => `<li><span class="n">${i+1}</span><span><b>${esc(a.title)}</b><span>${esc(a.detail)}</span><br><span class="w">${esc(a.why)}</span></span></li>`).join('');
-  $('#out').innerHTML = `<article class="sheet">
+  const todo = rep.actions.map((a, i) => `<li><span class="n">${i+1}</span><span><b>${esc(a.title)}</b>${esc(a.detail)}<br><span class="w">${esc(a.why)}</span></span></li>`).join('');
+  $('#modal').innerHTML = `<article class="sheet">
+    <div class="bar"><button class="outline" onclick="window.print()">${ic('i-print')}PDF로 저장</button><button class="outline icon" onclick="closeSheet()" aria-label="닫기">${ic('i-x')}</button></div>
     <div><div class="meta">${esc(rep.emd)} · ${rep.month}월</div><h2>${rep.month}월 ${esc(rep.emd)} 손님은<br>이렇게 와요</h2></div>
     <div class="sigs">${sig}</div>
     ${sentences && sentences.length ? `<p class="says">${sentences.map(esc).join(' ')}</p>` : ''}
-    ${rep.asks.length ? `<div class="asks">${rep.asks.map(esc).join('<br>')}</div>` : ''}
     <div class="todo"><h3>이렇게 준비해 보세요</h3><ol>${todo || '<li>지금은 알려 드릴 게 없어요.</li>'}</ol></div>
-    <div class="foot">
-      <span>${esc(rep.note)} · ${ym}까지 기록${rep.dummy ? ' · 가상 데이터' : ''}</span>
-      ${rep.center.length ? `<span>${rep.center.map(esc).join(' ')}</span>` : ''}
-      <span>출처 제주데이터허브</span>
-    </div>
-    <details class="noprint"><summary>반출 신청할 때 쓸 문구 보기</summary><pre>${esc(rep.export.memo)}</pre></details>
   </article>`;
+  $('#modal').classList.add('on'); $('#modal').scrollTop = 0;
+  if (print) setTimeout(() => window.print(), 50);
+}
+function closeSheet() { $('#modal').classList.remove('on'); }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+// ---------- 받을 자료 안내 ----------
+const TABLE_STYLE = [{icon:'i-card', bg:'var(--busySoft)', fg:'var(--busy)'}, {icon:'i-globe', bg:'var(--calmSoft)', fg:'var(--calm)'}];
+async function order() {
+  const emd = LAST ? LAST.emd : $('#emd').value, month = LAST ? LAST.month : $('#month').value;
+  me('어떤 자료를 받으면 될까요?');
+  const o = await api(`/api/order?emd=${encodeURIComponent(emd)}&month=${month}`);
+  const steps = o['센터에서받기'].map((x, i) => { const st = TABLE_STYLE[i % TABLE_STYLE.length]; return `<li class="step">
+      <span class="ic" style="background:${st.bg};color:${st.fg}">${ic(st.icon)}</span>
+      <div><div class="nm">${esc(x['표'])}</div><div class="use">${esc(x['쓰임'])}</div>
+        <div class="chips">${x['조건'].split(',').map(c => `<span class="chip dark">${esc(c.trim())}</span>`).join('')}${x['달'].map(d => `<span class="chip">${esc(d)}</span>`).join('')}</div></div>
+    </li>`; }).join('');
+  const body = agent(bubble(`${emd} ${month}월을 더 정확하게 보려면 센터 화면에서 이 표를 받아 주세요.`));
+  body.insertAdjacentHTML('beforeend', `<div class="card">
+    <div class="card-h"><div class="t">센터에서 받을 자료</div><div class="s">받은 CSV는 이 화면에 그대로 끌어 놓으면 돼요</div></div>
+    <div class="card-b">
+      <div class="have">${ic('i-check')}공개 데이터(제주데이터허브 583·589)는 이미 들어 있어요</div>
+      <ol class="steps">${steps}</ol>
+      <div class="tip">${ic('i-info')}<span>${esc(o['안내'])}</span></div>
+    </div>
+    <div class="card-f"><button onclick="document.querySelector('#file').click()">${ic('i-clip')}받은 파일 넣기</button></div>
+  </div>`);
+  scrollEnd();
 }
 
-const AV = '<svg class="av" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg>';
-function say(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text;
-  if (cls === 'ag') { const row = document.createElement('div'); row.className = 'ag-row'; row.innerHTML = AV; row.append(d); $('#chat').append(row); } else $('#chat').append(d);
-  $('#chat').scrollTop = 1e9; return d; }
-
-async function ask(text) {
-  if (!text.trim()) return;
-  const named = (INFO.emds || []).some(e => text.includes(e) || text.includes(e.slice(0, -1)));
-  const shown = document.querySelector('.sheet .sigs');
-  const t = named || !shown ? text : `${$('#emd').value} ${$('#month').value}월. ${text}`;
-  say('me', text);
-  const wait = say('ag', '보고 있어요…');
-  try {
-    const r = await api('/api/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text: t})});
-    wait.textContent = r.answer || '다시 한번 물어봐 주세요.';
-    if (r.report) { $('#emd').value = r.report.emd; $('#month').value = r.report.month; sheet(r.report, [r.answer]); }
-  } catch (e) { wait.textContent = '연결이 끊겼어요. 검은 창이 켜져 있는지 확인해 주세요.'; }
-}
-
-const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
-function showFiles(list) { $('#files').innerHTML = (list || []).map(f => `<li>${CHECK}<span class="nm">${esc(f.title)}</span><span class="badge">${f.months.length}개월</span></li>`).join(''); }
-
+// ---------- 파일 넣기 ----------
 async function upload(files) {
+  if (!files.length) return;
+  me(`파일 ${files.length}개를 넣었어요`);
+  const body = agent('');
   for (const f of files) {
     const r = await api('/api/upload?name=' + encodeURIComponent(f.name), {method:'POST', body: await f.arrayBuffer()});
-    say('ag', r.table ? `${r.title} 파일이네요. ${r.months.length}개월치를 확인했어요.` : '이 파일은 어떤 표인지 모르겠어요.');
+    const ok = !!r.table;
+    const months = (r.months || []).map(m => `${m.slice(0,4)}년 ${+m.slice(4)}월`).join(', ');
+    body.insertAdjacentHTML('beforeend', `<div class="file ${ok ? '' : 'bad'}"><span class="ic">${ic(ok ? 'i-check' : 'i-alert')}</span>
+      <div><div class="nm">${ok ? esc(r.title) : '어떤 표인지 모르겠어요'}</div><div class="s">${ok ? esc(months) + (r.problems.length ? ' · ' + esc(r.problems.join(' ')) : '') : esc(f.name)}</div></div></div>`);
   }
-  INFO = await api('/api/info'); showFiles(INFO.uploads);
-  if (document.querySelector('.sheet .sigs')) $('#go').click();
+  if (LAST) {
+    const r = await api(`/api/report?emd=${encodeURIComponent(LAST.emd)}&month=${LAST.month}`);
+    body.insertAdjacentHTML('beforeend', bubble('넣은 자료까지 반영해서 다시 볼게요.'));
+    addReport(body, r.report, r.sentences);
+  } else body.insertAdjacentHTML('beforeend', bubble('확인했어요. 이제 동네와 달을 알려 주세요.'));
+  scrollEnd();
 }
 
-$('#go').onclick = async () => { const r = await api(`/api/report?emd=${encodeURIComponent($('#emd').value)}&month=${$('#month').value}`); sheet(r.report, r.sentences); };
+// ---------- 연결 ----------
 $('#send').onclick = () => { ask($('#q').value); $('#q').value = ''; };
 $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) $('#send').click(); });
 document.querySelectorAll('[data-q]').forEach(b => b.onclick = () => ask(b.dataset.q));
-$('#file').onchange = async e => { await upload(e.target.files); e.target.value = ''; };
-$('#drop').addEventListener('dragover', e => { e.preventDefault(); $('#drop').classList.add('over'); });
-$('#drop').addEventListener('dragleave', () => $('#drop').classList.remove('over'));
-$('#drop').addEventListener('drop', e => { e.preventDefault(); $('#drop').classList.remove('over'); upload(e.dataTransfer.files); });
-$('#order').onclick = async () => {
-  const o = await api(`/api/order?emd=${encodeURIComponent($('#emd').value)}&month=${$('#month').value}`);
-  say('ag', '센터 화면에서 이렇게 받아 주세요. ' + o['센터에서받기'].map(x => `「${x['표']}」 ${x['달'].join(', ')}`).join(' / ') + '. ' + o['안내']);
-};
-$('#print').onclick = () => window.print();
-$('#clear').onclick = async () => { await api('/api/clear', {method:'POST'}); location.reload(); };
+$('#go').onclick = show;
+$('#order').onclick = order;
+$('#attach').onclick = () => $('#file').click();
+$('#file').onchange = async e => { await upload([...e.target.files]); e.target.value = ''; };
+let dragN = 0;
+window.addEventListener('dragenter', e => { e.preventDefault(); dragN++; $('#dropzone').classList.add('on'); });
+window.addEventListener('dragleave', () => { if (--dragN <= 0) { dragN = 0; $('#dropzone').classList.remove('on'); } });
+window.addEventListener('dragover', e => e.preventDefault());
+window.addEventListener('drop', e => { e.preventDefault(); dragN = 0; $('#dropzone').classList.remove('on'); upload([...e.dataTransfer.files]); });
+$('#clear').onclick = async () => { await api('/api/clear', {method:'POST'}); location.href = '/'; };
 init();
 </script>
 </body>
