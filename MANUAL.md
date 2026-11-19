@@ -8,7 +8,7 @@
 |---|---|---|
 | 1 | https://www.python.org/downloads/ 에서 **Python 3.12 이상** Windows 설치 파일을 받아 실행. 첫 화면에서 **`Add python.exe to PATH`** 체크 → `Install Now` | 명령 프롬프트에서 `python --version` 이 3.12 이상 |
 | 2 | 제출 폴더(zip 푼 곳)에서 **`setup.bat`** 두 번 클릭 | 창에 `설치 확인 끝` 이 나옴 |
-| 3 | 폴더의 **`.env`** 파일을 메모장으로 열어 `ANTHROPIC_API_KEY=` 뒤에 Claude API 키를 붙여 넣고 저장 | 운영 때는 센터 키, 평가 때는 제출된 평가용 키 |
+| 3 | 폴더의 **`.env`** 파일을 메모장으로 열어 `ANTHROPIC_API_KEY=` 뒤에 Claude API 키를 붙여 넣고 저장 (제출 zip에는 평가용 키가 이미 들어 있어 이 단계는 건너뛰어도 됩니다) | 운영 때는 센터 키, 평가 때는 제출된 평가용 키 |
 | 4 | **`start.bat`** 두 번 클릭 | 검은 창에 `손님 신호등이 켜졌습니다` + 브라우저가 열림 |
 
 - 추가로 설치할 패키지는 없습니다. 인터넷은 AI 문장을 만들 때(`api.anthropic.com`)만 씁니다.

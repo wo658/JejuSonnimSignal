@@ -14,15 +14,15 @@
 
 1. **Python 3.12 이상 설치**: https://www.python.org/downloads/ → 설치 첫 화면에서 `Add python.exe to PATH` 체크
 2. **`setup.bat` 두 번 클릭**: Python 확인, `.env` 만들기, 자체 시험 실행. **추가로 설치할 패키지는 없습니다** (표준 라이브러리만 사용)
-3. **`.env` 에 키 넣기** (메모장으로 열기): `ANTHROPIC_API_KEY=` 뒤에 Claude API 키. 비워 두면 AI 없이 틀 문장으로 동작
-4. **`start.bat` 두 번 클릭**: 브라우저가 `http://127.0.0.1:8765` 로 열립니다
-
-이 저장소에서 실행할 때는 먼저 `data/snapshot/`을 만들어야 합니다:
-
-```
-set PYTHONPATH=src
-python -I scripts\collect_hub.py 202201 202608
-```
+3. **`.env` 에 키 넣기** (메모장으로 열기)
+   - `ANTHROPIC_API_KEY=` 뒤에 Claude API 키. 비워 두면 AI 없이 틀 문장으로 동작
+   - `JEJU_PROJECT_KEY=` 뒤에 제주데이터허브 프로젝트키 (이 저장소에는 데이터 스냅샷이 없어서 필요)
+4. **데이터 스냅샷 받기** (이 저장소에서만, 명령 프롬프트에서 한 번):
+   ```
+   set PYTHONPATH=src
+   python -I scripts\collect_hub.py 202201 202608
+   ```
+5. **`start.bat` 두 번 클릭**: 브라우저가 `http://127.0.0.1:8765` 로 열립니다. 다 쓰면 `초기화`를 누르면 넣은 자료가 지워집니다 (켤 때도 자동 삭제, `.env` 의 `AUTO_DELETE=off` 로 끔)
 
 ## 쓰는 것
 
