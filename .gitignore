@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.DS_Store
+work/
+# 제주데이터허브 원본·스냅샷은 외부 저장소에 올리지 않음 (대회 게시판 안내)
+data/snapshot/
+data/raw/

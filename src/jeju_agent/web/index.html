@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>손님 신호등</title>
+<style>
+:root { --ink:#1e2528; --ink2:#5b6669; --line:#d9dfe0; --bg:#f3f5f5; --card:#fff; --btn:#1e2528;
+  --busy:#e0562a; --busySoft:#fbe3d9; --mid:#9a6a00; --midSoft:#fbefd3; --calm:#2f86a0; --calmSoft:#d9ecf1; --hold:#8b95a1; --holdSoft:#f3f5f5 }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif; font-size:16px; line-height:1.6; word-break:keep-all }
+.wrap { max-width:1080px; margin:0 auto; padding:28px 24px 60px; display:grid; grid-template-columns:340px 1fr; gap:24px; align-items:start }
+.brand { grid-column:1/-1; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap }
+.brand h1 { margin:0; font-size:26px }
+.brand span { color:var(--ink2); font-size:15px }
+.banner { grid-column:1/-1; background:var(--midSoft); color:var(--mid); border-radius:12px; padding:10px 16px; font-size:14px }
+.side { display:flex; flex-direction:column; gap:12px }
+.card { background:var(--card); border-radius:20px; padding:20px; display:flex; flex-direction:column; gap:12px }
+.card h2 { margin:0; font-size:17px }
+label { font-size:14px; color:var(--ink2) }
+select, input[type=text] { width:100%; font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:#fff }
+.two { display:grid; grid-template-columns:1fr 100px; gap:8px }
+button { font:inherit; padding:13px 16px; border:0; border-radius:12px; background:var(--btn); color:#fff; font-weight:600; cursor:pointer }
+button.sub { background:var(--bg); color:var(--ink); font-weight:500 }
+button.text { background:none; color:var(--ink2); padding:6px; font-weight:400; font-size:14px }
+button:focus-visible, select:focus-visible, input:focus-visible { outline:3px solid var(--calm); outline-offset:2px }
+.chips { display:flex; flex-wrap:wrap; gap:6px }
+.chips button { background:var(--bg); color:var(--ink); font-weight:500; font-size:14px; padding:8px 12px; border-radius:999px }
+.chat { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow:auto }
+.msg { padding:10px 14px; border-radius:16px; max-width:90%; font-size:15px }
+.me { background:var(--busySoft); color:var(--ink); align-self:flex-end }
+.ag { background:var(--bg); align-self:flex-start }
+.drop { border:1.5px dashed var(--line); border-radius:12px; padding:14px; text-align:center; font-size:14px; color:var(--ink2) }
+.drop input { margin-top:6px; font-size:13px }
+.files { font-size:14px; color:var(--ink2) }
+.sheet { background:var(--card); border-radius:24px; padding:32px; display:flex; flex-direction:column; gap:24px }
+.sheet .meta { color:var(--ink2); font-size:14px }
+.sheet h2 { margin:4px 0 0; font-size:26px; line-height:1.35 }
+.sigs { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.sig { border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:2px }
+.sig .g { font-size:14px; color:var(--ink2) }
+.sig .l { font-size:28px; font-weight:700 }
+.sig .r { font-size:13px; color:var(--ink2) }
+.busy { background:var(--busySoft) } .busy .l { color:var(--busy) }
+.mid { background:var(--midSoft) } .mid .l { color:var(--mid) }
+.calm { background:var(--calmSoft) } .calm .l { color:var(--calm) }
+.hold { background:var(--holdSoft) } .hold .l { color:var(--hold); font-size:22px }
+.says { font-size:18px; line-height:1.6 }
+.asks { background:var(--busySoft); border-radius:12px; padding:12px 16px; font-size:15px }
+.todo h3 { margin:0 0 10px; font-size:18px }
+.todo ol { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px }
+.todo li { display:grid; grid-template-columns:28px 1fr; gap:12px }
+.todo .n { width:28px; height:28px; border-radius:50%; background:var(--ink); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700 }
+.todo b { font-size:17px; display:block }
+.todo .d { color:var(--ink) }
+.todo .w { color:var(--ink2); font-size:13px }
+.foot { color:var(--ink2); font-size:13px; display:flex; flex-direction:column; gap:4px }
+details { font-size:13px; color:var(--ink2) }
+details pre { white-space:pre-wrap; font-family:inherit; background:var(--bg); border-radius:10px; padding:10px; margin:6px 0 0 }
+.empty { color:var(--ink2); text-align:center; padding:60px 0 }
+@media (max-width:900px) { .wrap { grid-template-columns:1fr } .sigs { grid-template-columns:1fr } }
+@media print { .side, .brand, .banner, .noprint { display:none !important } body { background:#fff } .wrap { display:block; padding:0 } .sheet { padding:0 }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><h1>손님 신호등</h1><span id="mode">우리 동네 손님, 예년엔 어땠을까요?</span></div>
+  <div class="banner" id="banner" hidden></div>
+
+  <aside class="side">
+    <section class="card" aria-label="동네와 달">
+      <h2>어디서, 언제가 궁금하세요?</h2>
+      <div class="two">
+        <div><label for="emd">동네</label><select id="emd"></select></div>
+        <div><label for="month">달</label><select id="month"></select></div>
+      </div>
+      <button id="go">확인하기</button>
+    </section>
+
+    <section class="card" aria-label="물어보기">
+      <h2>편하게 물어보세요</h2>
+      <div class="chat" id="chat" aria-live="polite"><div class="msg ag">예: 애월에서 카페 하는데, 1월에 쉬어도 될까요?</div></div>
+      <div class="chips">
+        <button data-q="중국어 메뉴판 바꿀까요?">메뉴판 바꿀까요?</button>
+        <button data-q="이 달에 쉬어도 될까요?">쉬어도 될까요?</button>
+        <button data-q="재료 더 받아야 할까요?">재료 더 받을까요?</button>
+      </div>
+      <div class="two"><input id="q" type="text" placeholder="궁금한 걸 적어 주세요" aria-label="질문"><button id="send">보내기</button></div>
+    </section>
+
+    <section class="card" aria-label="센터 자료">
+      <h2>센터 자료가 있나요? <span style="font-weight:400;color:var(--ink2);font-size:14px">선택</span></h2>
+      <div class="drop" id="drop">받은 CSV 파일을 여기에 놓아 주세요<br><input type="file" id="file" accept=".csv" multiple aria-label="CSV 파일 고르기"></div>
+      <div class="files" id="files"></div>
+      <button class="sub" id="order">어떤 자료를 받으면 될까요?</button>
+    </section>
+
+    <button class="sub" id="print">PDF로 저장하기</button>
+    <button class="text" id="clear">다 썼어요 · 자료 지우기</button>
+  </aside>
+
+  <main id="out"><div class="sheet"><p class="empty">동네와 달을 고르면 여기에 결과가 나와요.</p></div></main>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let INFO = {};
+async function api(path, opt) { const r = await fetch(path, opt); return r.json(); }
+
+async function init() {
+  INFO = await api('/api/info');
+  $('#emd').innerHTML = INFO.emds.map(e => `<option>${esc(e)}</option>`).join('');
+  $('#month').innerHTML = Array.from({length:12}, (_, i) => `<option value="${i+1}">${i+1}월</option>`).join('');
+  $('#month').value = String((new Date().getMonth() + 1) % 12 + 1);   // 다음 달
+  if (!INFO.llm) $('#mode').textContent = '우리 동네 손님, 예년엔 어땠을까요? · AI 없이 보는 중';
+  if (INFO.dummy) { $('#banner').hidden = false; $('#banner').textContent = '지금은 연습용 가상 데이터예요.'; }
+  showFiles(INFO.uploads);
+  const q = new URLSearchParams(location.search);   // 예: /?emd=애월읍&month=8
+  if (q.get('emd') && INFO.emds.includes(q.get('emd'))) { $('#emd').value = q.get('emd'); $('#month').value = q.get('month') || $('#month').value; $('#go').click(); }
+}
+
+function sheet(rep, sentences) {
+  if (!rep) return;
+  const ym = rep.data_until ? `${rep.data_until.slice(0,4)}년 ${+rep.data_until.slice(4)}월` : '';
+  const sig = rep.signals.map(s => `<div class="sig ${s.level}"><span class="g">${esc(s.guest_name)}</span><span class="l">${esc(s.label)}</span><span class="r">${s.ratio ? '평소의 ' + s.ratio.toFixed(1) + '배' : '기록이 부족해요'}</span></div>`).join('');
+  const todo = rep.actions.map((a, i) => `<li><span class="n">${i+1}</span><span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span><br><span class="w">${esc(a.why)}</span></span></li>`).join('');
+  $('#out').innerHTML = `<article class="sheet">
+    <div><div class="meta">${esc(rep.emd)} · ${rep.month}월</div><h2>${rep.month}월 ${esc(rep.emd)} 손님은<br>이렇게 와요</h2></div>
+    <div class="sigs">${sig}</div>
+    ${sentences && sentences.length ? `<p class="says">${sentences.map(esc).join(' ')}</p>` : ''}
+    ${rep.asks.length ? `<div class="asks">${rep.asks.map(esc).join('<br>')}</div>` : ''}
+    <div class="todo"><h3>이렇게 준비해 보세요</h3><ol>${todo || '<li>지금은 알려 드릴 게 없어요.</li>'}</ol></div>
+    <div class="foot">
+      <span>${esc(rep.note)} · ${ym}까지 기록${rep.dummy ? ' · 가상 데이터' : ''}</span>
+      ${rep.center.length ? `<span>${rep.center.map(esc).join(' ')}</span>` : ''}
+      <span>출처 제주데이터허브</span>
+    </div>
+    <details class="noprint"><summary>반출 신청할 때 쓸 문구 보기</summary><pre>${esc(rep.export.memo)}</pre></details>
+  </article>`;
+}
+
+function say(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text; $('#chat').append(d); $('#chat').scrollTop = 1e9; return d; }
+
+async function ask(text) {
+  if (!text.trim()) return;
+  const t = /[동읍면]/.test(text) ? text : `${$('#emd').value} ${$('#month').value}월. ${text}`;
+  say('me', text);
+  const wait = say('ag', '보고 있어요…');
+  try {
+    const r = await api('/api/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text: t})});
+    wait.textContent = r.answer || '다시 한번 물어봐 주세요.';
+    if (r.report) { $('#emd').value = r.report.emd; $('#month').value = r.report.month; sheet(r.report, [r.answer]); }
+  } catch (e) { wait.textContent = '연결이 끊겼어요. 검은 창이 켜져 있는지 확인해 주세요.'; }
+}
+
+function showFiles(list) { $('#files').innerHTML = (list || []).map(f => `✓ ${esc(f.title)} · ${f.months.length}개월`).join('<br>'); }
+
+async function upload(files) {
+  for (const f of files) {
+    const r = await api('/api/upload?name=' + encodeURIComponent(f.name), {method:'POST', body: await f.arrayBuffer()});
+    say('ag', r.table ? `${r.title} 파일이네요. ${r.months.length}개월치를 확인했어요.` : '이 파일은 어떤 표인지 모르겠어요.');
+  }
+  INFO = await api('/api/info'); showFiles(INFO.uploads);
+  if (document.querySelector('.sheet .sigs')) $('#go').click();
+}
+
+$('#go').onclick = async () => { const r = await api(`/api/report?emd=${encodeURIComponent($('#emd').value)}&month=${$('#month').value}`); sheet(r.report, r.sentences); };
+$('#send').onclick = () => { ask($('#q').value); $('#q').value = ''; };
+$('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) $('#send').click(); });
+document.querySelectorAll('[data-q]').forEach(b => b.onclick = () => ask(b.dataset.q));
+$('#file').onchange = e => upload(e.target.files);
+$('#drop').addEventListener('dragover', e => e.preventDefault());
+$('#drop').addEventListener('drop', e => { e.preventDefault(); upload(e.dataTransfer.files); });
+$('#order').onclick = async () => {
+  const o = await api(`/api/order?emd=${encodeURIComponent($('#emd').value)}&month=${$('#month').value}`);
+  say('ag', '센터 화면에서 이렇게 받아 주세요. ' + o['센터에서받기'].map(x => `「${x['표']}」 ${x['달'].join(', ')}`).join(' / ') + '. ' + o['안내']);
+};
+$('#print').onclick = () => window.print();
+$('#clear').onclick = async () => { await api('/api/clear', {method:'POST'}); location.reload(); };
+init();
+</script>
+</body>
+</html>
