@@ -5,102 +5,173 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>손님 신호등</title>
 <style>
-:root { --ink:#1e2528; --ink2:#5b6669; --line:#d9dfe0; --bg:#f3f5f5; --card:#fff; --btn:#1e2528;
-  --busy:#e0562a; --busySoft:#fbe3d9; --mid:#9a6a00; --midSoft:#fbefd3; --calm:#2f86a0; --calmSoft:#d9ecf1; --hold:#8b95a1; --holdSoft:#f3f5f5 }
+/* shadcn/ui (new-york, zinc) 토큰과 컴포넌트 모양을 CSS로 옮김. 외부 파일 없이 동작 */
+:root {
+  --background:#ffffff; --foreground:#09090b; --page:#fafafa;
+  --muted:#f4f4f5; --muted-fg:#71717a; --accent:#f4f4f5;
+  --border:#e4e4e7; --input:#e4e4e7; --ring:#18181b;
+  --primary:#18181b; --primary-fg:#fafafa; --radius:10px;
+  --shadow-sm:0 1px 2px 0 rgb(0 0 0 / .05); --shadow:0 1px 3px 0 rgb(0 0 0 / .08), 0 1px 2px -1px rgb(0 0 0 / .08);
+  --busy:#e0562a; --busySoft:#fbe3d9; --mid:#9a6a00; --midSoft:#fbefd3; --calm:#2f86a0; --calmSoft:#d9ecf1; --hold:#8b95a1; --holdSoft:#f4f4f5
+}
 * { box-sizing:border-box }
-body { margin:0; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif; font-size:16px; line-height:1.6; word-break:keep-all }
-.wrap { max-width:1080px; margin:0 auto; padding:28px 24px 60px; display:grid; grid-template-columns:340px 1fr; gap:24px; align-items:start }
-.brand { grid-column:1/-1; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap }
-.brand h1 { margin:0; font-size:26px }
-.brand span { color:var(--ink2); font-size:15px }
-.banner { grid-column:1/-1; background:var(--midSoft); color:var(--mid); border-radius:12px; padding:10px 16px; font-size:14px }
-.side { display:flex; flex-direction:column; gap:12px }
-.card { background:var(--card); border-radius:20px; padding:20px; display:flex; flex-direction:column; gap:12px }
-.card h2 { margin:0; font-size:17px }
-label { font-size:14px; color:var(--ink2) }
-select, input[type=text] { width:100%; font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:#fff }
-.two { display:grid; grid-template-columns:1fr 100px; gap:8px }
-button { font:inherit; padding:13px 16px; border:0; border-radius:12px; background:var(--btn); color:#fff; font-weight:600; cursor:pointer }
-button.sub { background:var(--bg); color:var(--ink); font-weight:500 }
-button.text { background:none; color:var(--ink2); padding:6px; font-weight:400; font-size:14px }
-button:focus-visible, select:focus-visible, input:focus-visible { outline:3px solid var(--calm); outline-offset:2px }
+body { margin:0; background:var(--page); color:var(--foreground); font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif; font-size:15px; line-height:1.6; word-break:keep-all; -webkit-font-smoothing:antialiased }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+.wrap { max-width:1160px; margin:0 auto; padding:28px 24px 60px; display:grid; grid-template-columns:420px 1fr; gap:20px; align-items:start }
+.brand { grid-column:1/-1; display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding-bottom:4px }
+.brand h1 { margin:0; font-size:24px; font-weight:700; letter-spacing:-.02em }
+.brand span { color:var(--muted-fg); font-size:14px }
+.banner { grid-column:1/-1; border:1px solid #f5d98a; background:var(--midSoft); color:var(--mid); border-radius:var(--radius); padding:10px 14px; font-size:14px }
+.side { display:flex; flex-direction:column; gap:14px }
+.side .bottom { display:flex; flex-direction:column; gap:6px }
+
+/* Card */
+.card { background:var(--background); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow-sm); padding:20px; display:flex; flex-direction:column; gap:14px }
+.card-h { display:flex; flex-direction:column; gap:2px }
+.card h2 { margin:0; font-size:16px; font-weight:600; letter-spacing:-.01em; display:flex; align-items:center; gap:8px }
+.card-d { margin:0; color:var(--muted-fg); font-size:13.5px }
+
+/* Label · Field */
+.field { display:flex; flex-direction:column; gap:6px }
+label.lb { font-size:13.5px; font-weight:500; color:var(--foreground) }
+.two { display:grid; grid-template-columns:1fr 112px; gap:10px }
+.row { display:flex; gap:8px }
+.row input { flex:1 }
+
+/* Select · Input (SelectTrigger / Input) */
+select, input[type=text] { width:100%; height:42px; font:inherit; font-size:15px; color:var(--foreground); padding:0 12px; border:1px solid var(--input); border-radius:var(--radius); background-color:var(--background); box-shadow:var(--shadow-sm); transition:border-color .15s, box-shadow .15s }
+select { appearance:none; -webkit-appearance:none; padding-right:36px; cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 10px center }
+select:hover, input[type=text]:hover { border-color:#d4d4d8 }
+input::placeholder { color:var(--muted-fg) }
+select:focus-visible, input:focus-visible, button:focus-visible, .drop:focus-within { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px rgb(24 24 27 / .12) }
+
+/* Button */
+button { font:inherit; font-size:14.5px; font-weight:500; height:42px; padding:0 16px; border:1px solid transparent; border-radius:var(--radius); background:var(--primary); color:var(--primary-fg); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; white-space:nowrap; box-shadow:var(--shadow-sm); transition:background .15s, border-color .15s }
+button:hover { background:#27272a }
+button.outline { background:var(--background); color:var(--foreground); border-color:var(--input) }
+button.outline:hover { background:var(--accent) }
+button.secondary { background:var(--muted); color:var(--foreground); box-shadow:none }
+button.secondary:hover { background:#e4e4e7 }
+button.ghost { background:none; color:var(--muted-fg); box-shadow:none; height:36px; font-size:13.5px }
+button.ghost:hover { background:var(--accent); color:var(--foreground) }
+button svg { width:16px; height:16px; flex:none }
+
+/* Badge */
+.badge { display:inline-flex; align-items:center; border:1px solid var(--border); border-radius:999px; padding:1px 9px; font-size:12px; font-weight:500; color:var(--muted-fg); background:var(--background); line-height:1.6 }
+
+/* 대화 */
 .chips { display:flex; flex-wrap:wrap; gap:6px }
-.chips button { background:var(--bg); color:var(--ink); font-weight:500; font-size:14px; padding:8px 12px; border-radius:999px }
-.chat { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow:auto }
-.msg { padding:10px 14px; border-radius:16px; max-width:90%; font-size:15px }
-.me { background:var(--busySoft); color:var(--ink); align-self:flex-end }
-.ag { background:var(--bg); align-self:flex-start }
-.drop { border:1.5px dashed var(--line); border-radius:12px; padding:14px; text-align:center; font-size:14px; color:var(--ink2) }
-.drop input { margin-top:6px; font-size:13px }
-.files { font-size:14px; color:var(--ink2) }
-.sheet { background:var(--card); border-radius:24px; padding:32px; display:flex; flex-direction:column; gap:24px }
-.sheet .meta { color:var(--ink2); font-size:14px }
-.sheet h2 { margin:4px 0 0; font-size:26px; line-height:1.35 }
+.chips button { height:32px; padding:0 12px; font-size:13.5px; border-radius:999px; background:var(--background); color:var(--foreground); border-color:var(--input) }
+.chips button:hover { background:var(--accent) }
+.chat { display:flex; flex-direction:column; gap:10px; min-height:300px; max-height:460px; overflow:auto; padding:4px 2px }
+.chatcard h2 { font-size:18px }
+.ag-row { display:flex; gap:8px; align-items:flex-start; max-width:92% }
+.ag-row .msg { max-width:100% }
+.av { width:28px; height:28px; flex:none; margin-top:2px }
+.pick { display:grid; grid-template-columns:1fr 100px auto; gap:8px; align-items:end }
+.chatcard .row input, .chatcard .row button { height:48px }
+.chatcard .row input { font-size:15.5px }
+.msg { padding:10px 14px; border-radius:14px; max-width:88%; font-size:15px }
+.me { background:var(--primary); color:var(--primary-fg); align-self:flex-end }
+.ag { background:var(--muted); align-self:flex-start }
+
+/* 파일 놓는 곳 */
+.drop { position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; border:1.5px dashed #d4d4d8; border-radius:12px; padding:22px 16px; text-align:center; cursor:pointer; background:var(--background); transition:border-color .15s, background .15s }
+.drop:hover, .drop.over { border-color:var(--ring); background:var(--page) }
+.drop .ic { width:40px; height:40px; border-radius:999px; background:var(--muted); display:grid; place-items:center }
+.drop .ic svg { width:20px; height:20px; color:var(--muted-fg) }
+.drop .t { font-size:14.5px; font-weight:500 }
+.drop .d { font-size:13px; color:var(--muted-fg) }
+.files { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px }
+.files:empty { display:none }
+.files li { display:flex; align-items:center; gap:10px; border:1px solid var(--border); border-radius:var(--radius); padding:9px 12px; font-size:14px }
+.files li svg { width:16px; height:16px; color:#16a34a; flex:none }
+.files li .nm { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+
+/* 결과지 */
+.sheet { background:var(--background); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-sm); padding:32px; display:flex; flex-direction:column; gap:24px }
+.sheet .meta { color:var(--muted-fg); font-size:14px }
+.sheet h2 { margin:4px 0 0; font-size:26px; line-height:1.35; letter-spacing:-.02em }
 .sigs { display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
-.sig { border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:2px }
-.sig .g { font-size:14px; color:var(--ink2) }
+.sig { border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:2px }
+.sig .g { font-size:14px; color:var(--muted-fg) }
 .sig .l { font-size:28px; font-weight:700 }
-.sig .r { font-size:13px; color:var(--ink2) }
+.sig .r { font-size:13px; color:var(--muted-fg) }
 .busy { background:var(--busySoft) } .busy .l { color:var(--busy) }
 .mid { background:var(--midSoft) } .mid .l { color:var(--mid) }
 .calm { background:var(--calmSoft) } .calm .l { color:var(--calm) }
 .hold { background:var(--holdSoft) } .hold .l { color:var(--hold); font-size:22px }
-.says { font-size:18px; line-height:1.6 }
-.asks { background:var(--busySoft); border-radius:12px; padding:12px 16px; font-size:15px }
-.todo h3 { margin:0 0 10px; font-size:18px }
+.says { font-size:18px; line-height:1.6; margin:0 }
+.asks { background:var(--busySoft); border-radius:var(--radius); padding:12px 16px; font-size:15px }
+.todo h3 { margin:0 0 12px; font-size:18px }
 .todo ol { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px }
 .todo li { display:grid; grid-template-columns:28px 1fr; gap:12px }
-.todo .n { width:28px; height:28px; border-radius:50%; background:var(--ink); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700 }
+.todo .n { width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700 }
 .todo b { font-size:17px; display:block }
-.todo .d { color:var(--ink) }
-.todo .w { color:var(--ink2); font-size:13px }
-.foot { color:var(--ink2); font-size:13px; display:flex; flex-direction:column; gap:4px }
-details { font-size:13px; color:var(--ink2) }
-details pre { white-space:pre-wrap; font-family:inherit; background:var(--bg); border-radius:10px; padding:10px; margin:6px 0 0 }
-.empty { color:var(--ink2); text-align:center; padding:60px 0 }
-@media (max-width:900px) { .wrap { grid-template-columns:1fr } .sigs { grid-template-columns:1fr } }
-@media print { .side, .brand, .banner, .noprint { display:none !important } body { background:#fff } .wrap { display:block; padding:0 } .sheet { padding:0 }
+.todo .w { color:var(--muted-fg); font-size:13px }
+.foot { color:var(--muted-fg); font-size:13px; display:flex; flex-direction:column; gap:4px; border-top:1px solid var(--border); padding-top:16px }
+details { font-size:13px; color:var(--muted-fg) }
+details summary { cursor:pointer }
+details pre { white-space:pre-wrap; font-family:inherit; background:var(--muted); border-radius:var(--radius); padding:12px; margin:8px 0 0 }
+.mascot.sm { width:34px; height:34px; flex:none }
+.mascot.lg { width:72px; height:72px }
+.empty { color:var(--muted-fg); text-align:center; padding:56px 0; display:flex; flex-direction:column; align-items:center; gap:18px }
+.empty p { margin:0; font-size:17px; color:var(--foreground); font-weight:600; line-height:1.5 }
+@media (max-width:900px) { .wrap { grid-template-columns:1fr; padding:20px 16px 48px } .sigs { grid-template-columns:1fr } .sheet { padding:22px } }
+@media print { .side, .brand, .banner, .noprint { display:none !important } body { background:#fff } .wrap { display:block; padding:0 } .sheet { padding:0; border:0; box-shadow:none }
   * { -webkit-print-color-adjust:exact; print-color-adjust:exact } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><h1>손님 신호등</h1><span id="mode">우리 동네 손님, 예년엔 어땠을까요?</span></div>
+  <div class="brand"><svg class="mascot sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><h1>손님 신호등</h1><span id="mode">우리 동네 손님, 예년엔 어땠을까요?</span></div>
   <div class="banner" id="banner" hidden></div>
 
   <aside class="side">
-    <section class="card" aria-label="동네와 달">
-      <h2>어디서, 언제가 궁금하세요?</h2>
-      <div class="two">
-        <div><label for="emd">동네</label><select id="emd"></select></div>
-        <div><label for="month">달</label><select id="month"></select></div>
+    <section class="card chatcard" aria-label="물어보기">
+      <div class="card-h"><h2>편하게 물어보세요</h2></div>
+      <div class="chat" id="chat" aria-live="polite">
+        <div class="ag-row"><svg class="av" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><div class="msg ag">어느 동네에서 장사하세요? 궁금한 달도 같이 알려 주세요.</div></div>
       </div>
-      <button id="go">확인하기</button>
-    </section>
-
-    <section class="card" aria-label="물어보기">
-      <h2>편하게 물어보세요</h2>
-      <div class="chat" id="chat" aria-live="polite"><div class="msg ag">예: 애월에서 카페 하는데, 1월에 쉬어도 될까요?</div></div>
       <div class="chips">
+        <button data-q="애월에서 카페 하는데, 1월에 쉬어도 될까요?">1월에 쉬어도 될까요?</button>
         <button data-q="중국어 메뉴판 바꿀까요?">메뉴판 바꿀까요?</button>
-        <button data-q="이 달에 쉬어도 될까요?">쉬어도 될까요?</button>
         <button data-q="재료 더 받아야 할까요?">재료 더 받을까요?</button>
       </div>
-      <div class="two"><input id="q" type="text" placeholder="궁금한 걸 적어 주세요" aria-label="질문"><button id="send">보내기</button></div>
+      <div class="row"><input id="q" type="text" placeholder="예: 성산 10월에 알바 더 뽑을까요?" aria-label="질문"><button id="send">보내기</button></div>
+    </section>
+
+    <section class="card" aria-label="동네와 달">
+      <div class="card-h"><h2>직접 골라도 돼요</h2></div>
+      <div class="pick">
+        <div class="field"><label class="lb" for="emd">동네</label><select id="emd"></select></div>
+        <div class="field"><label class="lb" for="month">달</label><select id="month"></select></div>
+        <button id="go">확인</button>
+      </div>
     </section>
 
     <section class="card" aria-label="센터 자료">
-      <h2>센터 자료가 있나요? <span style="font-weight:400;color:var(--ink2);font-size:14px">선택</span></h2>
-      <div class="drop" id="drop">받은 CSV 파일을 여기에 놓아 주세요<br><input type="file" id="file" accept=".csv" multiple aria-label="CSV 파일 고르기"></div>
-      <div class="files" id="files"></div>
-      <button class="sub" id="order">어떤 자료를 받으면 될까요?</button>
+      <div class="card-h"><h2>센터 자료가 있나요? <span class="badge">선택</span></h2>
+        <p class="card-d">없어도 결과지는 나와요.</p></div>
+      <label class="drop" id="drop">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></span>
+        <span class="t">CSV 파일을 끌어 놓거나 눌러서 골라 주세요</span>
+        <span class="d">센터에서 받은 파일 그대로 넣으면 돼요</span>
+        <input type="file" id="file" accept=".csv" multiple class="sr-only" aria-label="CSV 파일 고르기">
+      </label>
+      <ul class="files" id="files"></ul>
+      <button class="outline" id="order">어떤 자료를 받으면 될까요?</button>
     </section>
 
-    <button class="sub" id="print">PDF로 저장하기</button>
-    <button class="text" id="clear">다 썼어요 · 자료 지우기</button>
+    <div class="bottom">
+      <button class="secondary" id="print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>PDF로 저장하기</button>
+      <button class="ghost" id="clear">다 썼어요 · 자료 지우기</button>
+    </div>
   </aside>
 
-  <main id="out"><div class="sheet"><p class="empty">동네와 달을 고르면 여기에 결과가 나와요.</p></div></main>
+  <main id="out"><div class="sheet"><div class="empty"><svg class="mascot lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="손님 신호등 아이콘"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg><p>물어보거나 동네와 달을 고르면<br>손님 신호를 알려 드릴게요</p></div></div></main>
 </div>
 <script>
 const $ = s => document.querySelector(s);
@@ -117,6 +188,7 @@ async function init() {
   if (INFO.dummy) { $('#banner').hidden = false; $('#banner').textContent = '지금은 연습용 가상 데이터예요.'; }
   showFiles(INFO.uploads);
   const q = new URLSearchParams(location.search);   // 예: /?emd=애월읍&month=8
+  if (q.get('q')) { ask(q.get('q')); return; }   // 예: /?q=애월 1월에 쉬어도 될까요?
   if (q.get('emd') && INFO.emds.includes(q.get('emd'))) { $('#emd').value = q.get('emd'); $('#month').value = q.get('month') || $('#month').value; $('#go').click(); }
 }
 
@@ -124,7 +196,7 @@ function sheet(rep, sentences) {
   if (!rep) return;
   const ym = rep.data_until ? `${rep.data_until.slice(0,4)}년 ${+rep.data_until.slice(4)}월` : '';
   const sig = rep.signals.map(s => `<div class="sig ${s.level}"><span class="g">${esc(s.guest_name)}</span><span class="l">${esc(s.label)}</span><span class="r">${s.ratio ? '평소의 ' + s.ratio.toFixed(1) + '배' : '기록이 부족해요'}</span></div>`).join('');
-  const todo = rep.actions.map((a, i) => `<li><span class="n">${i+1}</span><span><b>${esc(a.title)}</b><span class="d">${esc(a.detail)}</span><br><span class="w">${esc(a.why)}</span></span></li>`).join('');
+  const todo = rep.actions.map((a, i) => `<li><span class="n">${i+1}</span><span><b>${esc(a.title)}</b><span>${esc(a.detail)}</span><br><span class="w">${esc(a.why)}</span></span></li>`).join('');
   $('#out').innerHTML = `<article class="sheet">
     <div><div class="meta">${esc(rep.emd)} · ${rep.month}월</div><h2>${rep.month}월 ${esc(rep.emd)} 손님은<br>이렇게 와요</h2></div>
     <div class="sigs">${sig}</div>
@@ -140,11 +212,16 @@ function sheet(rep, sentences) {
   </article>`;
 }
 
-function say(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text; $('#chat').append(d); $('#chat').scrollTop = 1e9; return d; }
+const AV = '<svg class="av" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true"> <rect width="120" height="120" rx="30" fill="#18181b"/> <circle cx="60" cy="33" r="13" fill="#f59a72"/> <circle cx="60" cy="60" r="13" fill="#f7cd5d"/> <circle cx="60" cy="87" r="13" fill="#8fcbe0"/> </svg>';
+function say(cls, text) { const d = document.createElement('div'); d.className = 'msg ' + cls; d.textContent = text;
+  if (cls === 'ag') { const row = document.createElement('div'); row.className = 'ag-row'; row.innerHTML = AV; row.append(d); $('#chat').append(row); } else $('#chat').append(d);
+  $('#chat').scrollTop = 1e9; return d; }
 
 async function ask(text) {
   if (!text.trim()) return;
-  const t = /[동읍면]/.test(text) ? text : `${$('#emd').value} ${$('#month').value}월. ${text}`;
+  const named = (INFO.emds || []).some(e => text.includes(e) || text.includes(e.slice(0, -1)));
+  const shown = document.querySelector('.sheet .sigs');
+  const t = named || !shown ? text : `${$('#emd').value} ${$('#month').value}월. ${text}`;
   say('me', text);
   const wait = say('ag', '보고 있어요…');
   try {
@@ -154,7 +231,8 @@ async function ask(text) {
   } catch (e) { wait.textContent = '연결이 끊겼어요. 검은 창이 켜져 있는지 확인해 주세요.'; }
 }
 
-function showFiles(list) { $('#files').innerHTML = (list || []).map(f => `✓ ${esc(f.title)} · ${f.months.length}개월`).join('<br>'); }
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+function showFiles(list) { $('#files').innerHTML = (list || []).map(f => `<li>${CHECK}<span class="nm">${esc(f.title)}</span><span class="badge">${f.months.length}개월</span></li>`).join(''); }
 
 async function upload(files) {
   for (const f of files) {
@@ -169,9 +247,10 @@ $('#go').onclick = async () => { const r = await api(`/api/report?emd=${encodeUR
 $('#send').onclick = () => { ask($('#q').value); $('#q').value = ''; };
 $('#q').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) $('#send').click(); });
 document.querySelectorAll('[data-q]').forEach(b => b.onclick = () => ask(b.dataset.q));
-$('#file').onchange = e => upload(e.target.files);
-$('#drop').addEventListener('dragover', e => e.preventDefault());
-$('#drop').addEventListener('drop', e => { e.preventDefault(); upload(e.dataTransfer.files); });
+$('#file').onchange = async e => { await upload(e.target.files); e.target.value = ''; };
+$('#drop').addEventListener('dragover', e => { e.preventDefault(); $('#drop').classList.add('over'); });
+$('#drop').addEventListener('dragleave', () => $('#drop').classList.remove('over'));
+$('#drop').addEventListener('drop', e => { e.preventDefault(); $('#drop').classList.remove('over'); upload(e.dataTransfer.files); });
 $('#order').onclick = async () => {
   const o = await api(`/api/order?emd=${encodeURIComponent($('#emd').value)}&month=${$('#month').value}`);
   say('ag', '센터 화면에서 이렇게 받아 주세요. ' + o['센터에서받기'].map(x => `「${x['표']}」 ${x['달'].join(', ')}`).join(' / ') + '. ' + o['안내']);
